@@ -1,0 +1,12 @@
+ {
+  "name"         : "ephemeral-menus",
+  "version"      : "0.0.1",
+  "description"  : "Comparing ephemeral menus to static menus",
+  "main"         : "server.js",
+  "author"       : "Harihar Subramanyam",
+  "dependencies" : {
+    "express"    : "~3.4.4",
+    "socket.io"  : "*",
+    "bootstrap"  : "*"
+    }
+  }
