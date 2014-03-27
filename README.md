@@ -12,7 +12,7 @@ and then start the server with:
 
 and open your browser (Google Chrome please!) and navigate to 
 
-http://localhost:8080
+> http://localhost:8080
 
 and that's how you take the experiment!
 
