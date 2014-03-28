@@ -7,6 +7,12 @@ $(document).ready(function(){
 	});
 	$('.dropdown-menu > li').click(on_menu_item_click);
 	populate_menus();
+	$.ajax({
+		url: "/api/get_experiment",
+		cache: false
+	}).done(function( data ) {
+		console.log(data);
+	});
 });
 
 function on_menu_click(menu_number){
@@ -115,14 +121,14 @@ function pick_n_from(choices, n){
 	for(var i = 0; i < choices.length; i++){
 		indices.push(i);
 	}
-	for(var i = 0; i < n; i++){
+	for(i = 0; i < n; i++){
 		var swap_with = Math.floor(Math.random()*choices.length);
 		var temp = indices[swap_with];
 		indices[swap_with] = indices[i];
 		indices[i] = temp;
 	}
 	var chosen = [];
-	for(var i = 0; i < n; i++){
+	for(i = 0; i < n; i++){
 		chosen.push(choices[indices[i]]);
 	}
 	return chosen;
