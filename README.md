@@ -16,5 +16,5 @@ and open your browser (Google Chrome please!) and navigate to
 
 and that's how you take the experiment!
 
-if you want to change the configuration, edit public/experiment_config.json
+if you want to change the configuration, edit `public/experiment_config.json`
 
