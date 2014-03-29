@@ -4,6 +4,7 @@ var block_index;
 var start_time;
 var chosen_menu;
 var chosen_index;
+var num_wrong;
 
 $(document).ready(function(){
 	menus = generate_menus();
@@ -28,7 +29,9 @@ function perform_block(){
 	$(".modal").modal();
 	$("#btnDismissModal").click(function(){
 		block_index = 0;
-		chosen_menu = pick_n_from([1,2,3],1);
+		num_wrong = 0;
+		start_time = null;
+		chosen_menu = pick_n_from([1,2,3],1)[0];
 		chosen_index = experiment_manager.current_block.selections[block_index]-1;
 		set_task_label();
 	});
@@ -46,7 +49,9 @@ function set_handlers(){
 }
 
 function on_menu_click(menu_number){
-	start_time = new Date();
+	if(start_time === null){
+		start_time = new Date();
+	}
 	$('.predicted_item').removeClass("predicted_item");
 	$(".dropdown-menu > li:not(.predicted_item)").stop().css("opacity",0.0);
 	menu_number = menu_number - 1;
@@ -67,24 +72,38 @@ function on_menu_item_click(){
 	var item_number = 4*group_number+in_group_number+1;
 	var selected_item = menus[menu_number][group_number][in_group_number];
 	if(chosen_menu == (menu_number+1) && item_number == experiment_manager.current_block.selections[block_index]){
-		console.log("Correct in " + (new Date() - start_time));
+		var elapsed_time = new Date() - start_time;
+		console.log(chosen_menu);
 		block_index += 1;
+		start_time = null;
 		if(block_index < experiment_manager.current_block.selections.length){
-			chosen_menu = pick_n_from([1,2,3],1);
+			$.ajax({
+				type: "POST",
+				url: "/api/create_event",
+				data: {"event":{
+						"time":elapsed_time,
+						"selection":chosen_index,
+						"menu_number":chosen_menu,
+						"num_wrong":num_wrong,
+						"type":experiment_manager.current_block.type,
+						"onset":experiment_manager.current_block.onset_delay
+					}
+				},
+				success: function(){console.log("Succeeded");},
+				dataType: "json"
+			});
+			chosen_menu = pick_n_from([1,2,3],1)[0];
 			chosen_index = experiment_manager.current_block.selections[block_index]-1;
 			set_task_label();
+			num_wrong = 0;
 		}else{
 			experiment_manager.next_block();
 			perform_block();
 		}
+	}else{
+		num_wrong++;
 	}
-	$.ajax({
-		type: "POST",
-		url: "/api/create_event",
-		data: {"selected_item":selected_item},
-		success: function(){console.log("Succeeded");},
-		dataType: "json"
-	});
+	
 }
 
 function populate_menus(){

@@ -33,7 +33,7 @@ app.get('/api/get_event', function(req, res) {
 });
 
 app.post('/api/create_event', function(req, res) {
-	event_log.push(req.body.selected_item);
+	event_log.push(req.body.event);
 	console.log(event_log);
 });
 
@@ -78,7 +78,7 @@ function generate_experiment_for_user(experiment_config, experiment_state){
 	};
 	experiment.blocks.push({
 		type:"practice",
-		onset_delay: 0,
+		onset_delay: 500,
 		selections:practice_selections,
 		predictions:practice_predictions
 	});
