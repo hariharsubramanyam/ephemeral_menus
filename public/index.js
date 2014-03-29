@@ -5,11 +5,13 @@ var start_time;
 var chosen_menu;
 var chosen_index;
 var num_wrong;
+var event_log;
 
 $(document).ready(function(){
 	menus = generate_menus();
 	populate_menus();
 	set_handlers();
+	event_log = [];
 	$.ajax({
 		url: "/api/get_experiment",
 		cache: false
@@ -23,6 +25,12 @@ function perform_block(){
 	var modal_text = experiment_manager.get_modal_text();
 	if(experiment_manager.current_block.type == "finish"){
 		$("#btnDismissModal").hide();
+		$.ajax({
+				type: "POST",
+				url: "/api/create_event",
+				data: event_log,
+				dataType: "json"
+		});
 	}
 	$('.modal-title').html(modal_text[0]);
 	$('.modal-body').html(modal_text[1]);
@@ -73,25 +81,20 @@ function on_menu_item_click(){
 	var selected_item = menus[menu_number][group_number][in_group_number];
 	if(chosen_menu == (menu_number+1) && item_number == experiment_manager.current_block.selections[block_index]){
 		var elapsed_time = new Date() - start_time;
-		console.log(chosen_menu);
 		block_index += 1;
 		start_time = null;
 		if(block_index < experiment_manager.current_block.selections.length){
-			$.ajax({
-				type: "POST",
-				url: "/api/create_event",
-				data: {"event":{
+			var event_info = {
 						"time":elapsed_time,
 						"selection":chosen_index,
 						"menu_number":chosen_menu,
 						"num_wrong":num_wrong,
 						"type":experiment_manager.current_block.type,
-						"onset":experiment_manager.current_block.onset_delay
-					}
-				},
-				success: function(){console.log("Succeeded");},
-				dataType: "json"
-			});
+						"onset":experiment_manager.current_block.onset_delay,
+						"adaptive_accuracy":experiment_manager.adaptive_accuracy
+					};
+			console.log(event_info);
+			event_log.push(event_log);
 			chosen_menu = pick_n_from([1,2,3],1)[0];
 			chosen_index = experiment_manager.current_block.selections[block_index]-1;
 			set_task_label();

@@ -3,6 +3,6 @@
 	"onset_delays":[0, 250, 500],
 	"adaptive_accuracies":[50, 75],
 	"selections_per_condition": 10,
-	"selections_for_practice": 10,
+	"selections_for_practice": 5,
 	"num_groups_for_counterbalancing": 3
 }

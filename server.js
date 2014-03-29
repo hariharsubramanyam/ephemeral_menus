@@ -6,7 +6,6 @@ var app = express();
 var experiment_config = JSON.parse(fs.readFileSync("experiment_config.json").toString("utf-8"));
 var experiment_state = JSON.parse(fs.readFileSync("experiment_state.json").toString("utf-8"));
 
-var event_log = [];
 
 app.configure(function() {
 	app.use(express.static(__dirname + '/public'));
@@ -28,18 +27,11 @@ app.get('/api/get_experiment', function(req,res){
 	res.send(experiment);
 });
 
-app.get('/api/get_event', function(req, res) {
-	console.log("getting event");
-});
-
-app.post('/api/create_event', function(req, res) {
-	event_log.push(req.body.event);
-	console.log(event_log);
-});
-
-// delete a todo
-app.delete('/api/delete_event/:event_id', function(req, res) {
-	console.log("Removing " + req.params.event_id);
+app.post('/api/create_event_log', function(req, res) {
+	fs.writeFile(("" + (new Date()) + ".json").replace(" ", "_"), JSON.stringify({
+		"user_id":experiment_state.total_users,
+		"event_log":req.body.event_log
+	}));
 });
 
 app.get('*', function(req, res) {
