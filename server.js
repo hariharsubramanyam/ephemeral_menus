@@ -78,6 +78,7 @@ function generate_experiment_for_user(experiment_config, experiment_state){
 	};
 	experiment.blocks.push({
 		type:"practice",
+		onset_delay: 0,
 		selections:practice_selections,
 		predictions:practice_predictions
 	});
@@ -85,10 +86,15 @@ function generate_experiment_for_user(experiment_config, experiment_state){
 	for(i = 0; i < experiment_config.onset_delays.length; i++){
 		experiment.blocks.push({
 			type:"onset " + experiment_config.onset_delays[i],
+			onset_delay: experiment_config.onset_delays[i],
 			selections:actual_selections[i],
 			predictions:actual_predictions[i]
 		});
 	}
+
+	experiment.blocks.push({
+		type:"finish"
+	});
 
 	return experiment;
 }

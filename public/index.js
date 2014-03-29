@@ -1,21 +1,52 @@
 var menus;
+var experiment_manager;
+var block_index;
+var start_time;
+var chosen_menu;
+var chosen_index;
 
 $(document).ready(function(){
 	menus = generate_menus();
+	populate_menus();
+	set_handlers();
+	$.ajax({
+		url: "/api/get_experiment",
+		cache: false
+	}).done(function( experiment ) {
+		experiment_manager = new ExperimentManager(experiment);
+		perform_block();
+	});
+});
+
+function perform_block(){
+	var modal_text = experiment_manager.get_modal_text();
+	if(experiment_manager.current_block.type == "finish"){
+		$("#btnDismissModal").hide();
+	}
+	$('.modal-title').html(modal_text[0]);
+	$('.modal-body').html(modal_text[1]);
+	$(".modal").modal();
+	$("#btnDismissModal").click(function(){
+		block_index = 0;
+		chosen_menu = pick_n_from([1,2,3],1);
+		chosen_index = experiment_manager.current_block.selections[block_index]-1;
+		set_task_label();
+	});
+}
+
+function set_task_label(){
+	$("#lblTask").text("Menu " + chosen_menu + " → " + $(".ijk"+(chosen_menu-1)+parseInt((""+chosen_index/4),10)+(chosen_index%4 + " a")).text());
+}
+
+function set_handlers(){
 	$('.dropdown-toggle').click(function(){
 		on_menu_click(Number($(this).attr("class").replace("dropdown-toggle menutoggle","")));
 	});
 	$('.dropdown-menu > li').click(on_menu_item_click);
-	populate_menus();
-	$.ajax({
-		url: "/api/get_experiment",
-		cache: false
-	}).done(function( data ) {
-		console.log(data);
-	});
-});
+}
 
 function on_menu_click(menu_number){
+	start_time = new Date();
 	$('.predicted_item').removeClass("predicted_item");
 	$(".dropdown-menu > li:not(.predicted_item)").stop().css("opacity",0.0);
 	menu_number = menu_number - 1;
@@ -25,7 +56,7 @@ function on_menu_click(menu_number){
 		var in_group_number = Math.floor(predicted_choices[i]-1)%4;
 		$(".ijk"+menu_number+group_number+in_group_number).addClass("predicted_item").css("opacity",1.0);
 	}
-	$(".dropdown-menu > li:not(.predicted_item)").fadeTo(1000, 1.0);
+	$(".dropdown-menu > li:not(.predicted_item)").fadeTo(experiment_manager.current_block.onset_delay, 1.0);
 }
 
 function on_menu_item_click(){
@@ -35,6 +66,18 @@ function on_menu_item_click(){
 	var in_group_number = Number(ijkstring[2]);
 	var item_number = 4*group_number+in_group_number+1;
 	var selected_item = menus[menu_number][group_number][in_group_number];
+	if(chosen_menu == (menu_number+1) && item_number == experiment_manager.current_block.selections[block_index]){
+		console.log("Correct in " + (new Date() - start_time));
+		block_index += 1;
+		if(block_index < experiment_manager.current_block.selections.length){
+			chosen_menu = pick_n_from([1,2,3],1);
+			chosen_index = experiment_manager.current_block.selections[block_index]-1;
+			set_task_label();
+		}else{
+			experiment_manager.next_block();
+			perform_block();
+		}
+	}
 	$.ajax({
 		type: "POST",
 		url: "/api/create_event",
@@ -55,10 +98,8 @@ function populate_menus(){
 }
 
 function get_predicted_choices(){
-	function rand_int(n){
-		return Math.floor(Math.random()*n)+1;
-	}
-	return [rand_int(16),rand_int(16),rand_int(16)];
+	var predictions = experiment_manager.current_block.predictions;
+	return [predictions[0][block_index], predictions[1][block_index], predictions[2][block_index]];
 }
 
 var all_groups = [["Red", "Green", "Blue", "White"],
