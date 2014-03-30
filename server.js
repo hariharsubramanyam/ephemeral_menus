@@ -21,7 +21,8 @@ app.get('/api/get_experiment', function(req,res){
 
 app.post('/api/create_event_log', function(req, res) {
 	experiment_state.total_users += 1;
-	fs.writeFile(("" + (new Date()) + ".json").replace(/ /g, "_"), JSON.stringify({
+	var base_file_name = ("" + new Date()).replace(/ /g, "_");
+	fs.writeFile(base_file_name + ".json", JSON.stringify({
 		"user_id":experiment_state.total_users,
 		"event_log":req.body.event_log
 	}));
@@ -32,7 +33,13 @@ app.post('/api/create_event_log', function(req, res) {
 			console.log("Updated experiment_state.total_users to " + experiment_state.total_users);
 		}
 	});
-	
+	var csv_string = "user_id, time, selection, menu_number, num_wrong, type, onset, adaptive_accuracy\n";
+	var event_info;
+	for(var i = 0; i < req.body.event_log.length; i++){
+		event_info = req.body.event_log[i];
+		csv_string += experiment_state.total_users + ", " + event_info["time"] + ", " + event_info["selection"] + ", " + event_info["menu_number"] + ", " + event_info["num_wrong"] + ", " + event_info["type"] + ", " + event_info["onset"] + ", " + event_info["adaptive_accuracy"] + "\n";
+	}
+	fs.writeFile(base_file_name + ".csv", csv_string);
 });
 
 app.get('*', function(req, res) {
