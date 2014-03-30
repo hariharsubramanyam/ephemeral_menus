@@ -28,7 +28,7 @@ app.get('/api/get_experiment', function(req,res){
 });
 
 app.post('/api/create_event_log', function(req, res) {
-	fs.writeFile(("" + (new Date()) + ".json").replace(" ", "_"), JSON.stringify({
+	fs.writeFile(("" + (new Date()) + ".json").replace(/ /g, "_"), JSON.stringify({
 		"user_id":experiment_state.total_users,
 		"event_log":req.body.event_log
 	}));

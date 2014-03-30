@@ -25,24 +25,18 @@ function perform_block(){
 	var modal_text = experiment_manager.get_modal_text();
 	if(experiment_manager.current_block.type == "finish"){
 		$("#btnDismissModal").hide();
+		console.log(event_log);
 		$.ajax({
 				type: "POST",
-				url: "/api/create_event",
-				data: event_log,
+				url: "/api/create_event_log",
+				data: {"event_log":event_log},
 				dataType: "json"
 		});
 	}
 	$('.modal-title').html(modal_text[0]);
 	$('.modal-body').html(modal_text[1]);
 	$(".modal").modal();
-	$("#btnDismissModal").click(function(){
-		block_index = 0;
-		num_wrong = 0;
-		start_time = null;
-		chosen_menu = pick_n_from([1,2,3],1)[0];
-		chosen_index = experiment_manager.current_block.selections[block_index]-1;
-		set_task_label();
-	});
+	
 }
 
 function set_task_label(){
@@ -54,6 +48,14 @@ function set_handlers(){
 		on_menu_click(Number($(this).attr("class").replace("dropdown-toggle menutoggle","")));
 	});
 	$('.dropdown-menu > li').click(on_menu_item_click);
+	$("#btnDismissModal").click(function(){
+		block_index = 0;
+		num_wrong = 0;
+		start_time = null;
+		chosen_menu = pick_n_from([1,2,3],1)[0];
+		chosen_index = experiment_manager.current_block.selections[block_index]-1;
+		set_task_label();
+	});
 }
 
 function on_menu_click(menu_number){
@@ -83,8 +85,7 @@ function on_menu_item_click(){
 		var elapsed_time = new Date() - start_time;
 		block_index += 1;
 		start_time = null;
-		if(block_index < experiment_manager.current_block.selections.length){
-			var event_info = {
+		var event_info = {
 						"time":elapsed_time,
 						"selection":chosen_index,
 						"menu_number":chosen_menu,
@@ -94,7 +95,8 @@ function on_menu_item_click(){
 						"adaptive_accuracy":experiment_manager.adaptive_accuracy
 					};
 			console.log(event_info);
-			event_log.push(event_log);
+			event_log.push(event_info);
+		if(block_index < experiment_manager.current_block.selections.length){
 			chosen_menu = pick_n_from([1,2,3],1)[0];
 			chosen_index = experiment_manager.current_block.selections[block_index]-1;
 			set_task_label();
