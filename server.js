@@ -16,7 +16,15 @@ app.configure(function() {
 
 app.get('/api/get_experiment', function(req,res){
 	var experiment = generate_experiment_for_user(experiment_config, experiment_state);
+	res.send(experiment);
+});
+
+app.post('/api/create_event_log', function(req, res) {
 	experiment_state.total_users += 1;
+	fs.writeFile(("" + (new Date()) + ".json").replace(/ /g, "_"), JSON.stringify({
+		"user_id":experiment_state.total_users,
+		"event_log":req.body.event_log
+	}));
 	fs.writeFile("experiment_state.json", JSON.stringify(experiment_state), function(err) {
 		if(err) {
 			console.log(err);
@@ -24,14 +32,6 @@ app.get('/api/get_experiment', function(req,res){
 			console.log("Updated experiment_state.total_users to " + experiment_state.total_users);
 		}
 	});
-	res.send(experiment);
-});
-
-app.post('/api/create_event_log', function(req, res) {
-	fs.writeFile(("" + (new Date()) + ".json").replace(/ /g, "_"), JSON.stringify({
-		"user_id":experiment_state.total_users,
-		"event_log":req.body.event_log
-	}));
 });
 
 app.get('*', function(req, res) {
@@ -68,6 +68,7 @@ function generate_experiment_for_user(experiment_config, experiment_state){
 		"adaptive_accuracy":adaptive_accuracy,
 		blocks:[]
 	};
+	
 	experiment.blocks.push({
 		type:"practice",
 		onset_delay: 500,
@@ -75,15 +76,21 @@ function generate_experiment_for_user(experiment_config, experiment_state){
 		predictions:practice_predictions
 	});
 
+	// Get control/onset blocks and counterbalance
+	var before_shift = [];
 	for(i = 0; i < experiment_config.onset_delays.length; i++){
-		experiment.blocks.push({
+		before_shift.push({
 			type:"onset " + experiment_config.onset_delays[i],
 			onset_delay: experiment_config.onset_delays[i],
 			selections:actual_selections[i],
 			predictions:actual_predictions[i]
 		});
 	}
-
+	var after_shift = shift_over(before_shift,experiment_state.total_users%experiment_config.num_groups_for_counterbalancing);
+	
+	for(i = 0; i < experiment_config.onset_delays.length; i++){
+		experiment.blocks.push(after_shift[i]);
+	}
 	experiment.blocks.push({
 		type:"finish"
 	});
@@ -222,4 +229,15 @@ function array_of_repeated_val(val, num_repeats){
 		arr.push(val);
 	}
 	return arr;
+}
+
+/*
+	Shifts all elements of array to the right by n
+*/
+function shift_over(arr, n){
+	var new_arr = [];
+	for(var i = 0; i < arr.length; i++){
+		new_arr[(i+n)%arr.length] = arr[i];
+	}
+	return new_arr;
 }
