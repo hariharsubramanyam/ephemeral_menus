@@ -32,6 +32,7 @@ app.post('/api/create_event_log', function(req, res) {
 			console.log("Updated experiment_state.total_users to " + experiment_state.total_users);
 		}
 	});
+	
 });
 
 app.get('*', function(req, res) {

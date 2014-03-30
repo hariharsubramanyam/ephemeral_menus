@@ -6,8 +6,10 @@ var chosen_menu;
 var chosen_index;
 var num_wrong;
 var event_log;
+var experiment_complete;
 
 $(document).ready(function(){
+	experiment_complete = false;
 	menus = generate_menus();
 	populate_menus();
 	set_handlers();
@@ -22,6 +24,9 @@ $(document).ready(function(){
 });
 
 function perform_block(){
+	if(experiment_complete){
+		return;
+	}
 	var modal_text = experiment_manager.get_modal_text();
 	if(experiment_manager.current_block.type == "finish"){
 		$("#btnDismissModal").hide();
@@ -32,6 +37,7 @@ function perform_block(){
 				data: {"event_log":event_log},
 				dataType: "json"
 		});
+		experiment_complete = true;
 	}
 	$('.modal-title').html(modal_text[0]);
 	$('.modal-body').html(modal_text[1]);
@@ -59,6 +65,9 @@ function set_handlers(){
 }
 
 function on_menu_click(menu_number){
+	if(experiment_complete){
+		return;
+	}
 	if(start_time === null){
 		start_time = new Date();
 	}
@@ -75,6 +84,9 @@ function on_menu_click(menu_number){
 }
 
 function on_menu_item_click(){
+	if(experiment_complete){
+		return;
+	}
 	var ijkstring = $(this).attr("class").replace("predicted_item","").replace("ijk","");
 	var menu_number = Number(ijkstring[0]);
 	var group_number = Number(ijkstring[1]);
@@ -94,7 +106,6 @@ function on_menu_item_click(){
 						"onset":experiment_manager.current_block.onset_delay,
 						"adaptive_accuracy":experiment_manager.adaptive_accuracy
 					};
-			console.log(event_info);
 			event_log.push(event_info);
 		if(block_index < experiment_manager.current_block.selections.length){
 			chosen_menu = pick_n_from([1,2,3],1)[0];
