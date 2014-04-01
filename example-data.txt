@@ -1,0 +1,11 @@
+user_id, time, selection, menu_number, num_wrong, type, onset, adaptive_accuracy
+8, 1437, 1, 2, 0, practice, 500, 75
+8, 2486, 8, 3, 0, onset 500, 500, 75
+8, 945, 0, 1, 0, onset 500, 500, 75
+8, 930, 0, 1, 0, onset 500, 500, 75
+8, 1492, 0, 2, 0, onset 0, 0, 75
+8, 1000, 2, 3, 0, onset 0, 0, 75
+8, 988, 1, 2, 0, onset 0, 0, 75
+8, 1084, 0, 3, 0, onset 250, 250, 75
+8, 1181, 3, 1, 0, onset 250, 250, 75
+8, 2735, 10, 3, 0, onset 250, 250, 75
