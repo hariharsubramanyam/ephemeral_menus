@@ -4,7 +4,19 @@ This is an implementation of the system described in:
 
 http://terpconnect.umd.edu/~leahkf/pubs/CHI2009-findlater-ephemeral.pdf
 
-Comparing ephemeral menus and static menus
+It allows you to configure and administer a study which compares ephemeral menus and static menus.
+
+Collaboration Statement: I did not work with anybody else to implement this program.
+
+# Demo
+
+See here:
+
+https://www.youtube.com/watch?v=D01fojgTFC0&feature=youtu.be
+
+# Requirements
+
+This requires node.js and it has been tested with Chrome.
 
 # Usage
 
