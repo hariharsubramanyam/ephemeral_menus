@@ -1,3 +1,9 @@
+# Introduction
+
+This is an implementation of the system described in:
+
+http://terpconnect.umd.edu/~leahkf/pubs/CHI2009-findlater-ephemeral.pdf
+
 Comparing ephemeral menus and static menus
 
 # Usage
