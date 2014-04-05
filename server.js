@@ -15,17 +15,7 @@ app.configure(function() {
 });
 
 app.get('/api/get_experiment', function(req,res){
-	var experiment = generate_experiment_for_user(experiment_config, experiment_state);
-	res.send(experiment);
-});
-
-app.post('/api/create_event_log', function(req, res) {
 	experiment_state.total_users += 1;
-	var base_file_name = ("" + new Date()).replace(/ /g, "_");
-	fs.writeFile(base_file_name + ".json", JSON.stringify({
-		"user_id":experiment_state.total_users,
-		"event_log":req.body.event_log
-	}));
 	fs.writeFile("experiment_state.json", JSON.stringify(experiment_state), function(err) {
 		if(err) {
 			console.log(err);
@@ -33,6 +23,16 @@ app.post('/api/create_event_log', function(req, res) {
 			console.log("Updated experiment_state.total_users to " + experiment_state.total_users);
 		}
 	});
+	var experiment = generate_experiment_for_user(experiment_config, experiment_state);
+	res.send(experiment);
+});
+
+app.post('/api/create_event_log', function(req, res) {
+	var base_file_name = ("" + new Date()).replace(/ /g, "_");
+	fs.writeFile(base_file_name + ".json", JSON.stringify({
+		"user_id":experiment_state.total_users,
+		"event_log":req.body.event_log
+	}));
 	var csv_string = "user_id, time, selection, menu_number, num_wrong, type, onset, adaptive_accuracy\n";
 	var event_info;
 	for(var i = 0; i < req.body.event_log.length; i++){
@@ -40,6 +40,21 @@ app.post('/api/create_event_log', function(req, res) {
 		csv_string += experiment_state.total_users + ", " + event_info["time"] + ", " + event_info["selection"] + ", " + event_info["menu_number"] + ", " + event_info["num_wrong"] + ", " + event_info["type"] + ", " + event_info["onset"] + ", " + event_info["adaptive_accuracy"] + "\n";
 	}
 	fs.writeFile(base_file_name + ".csv", csv_string);
+});
+
+app.post('/api/create_likert_response', function(req, res) {
+	var base_file_name = ("" + new Date()).replace(/ /g, "_");
+	fs.writeFile("likert_response_"+base_file_name + ".json", JSON.stringify({
+		"user_id":experiment_state.total_users,
+		"likert_responses":req.body.likert_responses
+	}));
+	var csv_string = "user_id, question, lbl_1, lbl_7, static, ephemeral\n";
+	var likert_response;
+	for(var i = 0; i < req.body.likert_responses.length; i++){
+		likert_response = req.body.likert_responses[i];
+		csv_string += experiment_state.total_users + ", " + likert_response["question"].replace(/,/g,"") + ", " + likert_response["lbl_1"] + ", " + likert_response["lbl_7"] + ", " + likert_response["static"] + ", " + likert_response["ephemeral"] +"\n";
+	}
+	fs.writeFile("likert_response_"+base_file_name + ".csv", csv_string);
 });
 
 app.get('*', function(req, res) {

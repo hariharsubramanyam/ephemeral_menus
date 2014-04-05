@@ -29,7 +29,10 @@ function perform_block(){
 	}
 	var modal_text = experiment_manager.get_modal_text();
 	if(experiment_manager.current_block.type == "finish"){
-		$("#btnDismissModal").hide();
+		$("#btnDismissModal").unbind("click");
+		$("#btnDismissModal").click(function(){
+			window.location.href = "likert_scale.html";
+		});
 		console.log(event_log);
 		$.ajax({
 				type: "POST",

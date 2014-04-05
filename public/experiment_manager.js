@@ -14,7 +14,7 @@ function ExperimentManager(experiment){
 		}else if(block_type === "onset 0"){
 			return ["<h1>Static Menus</h1>", "<p>Nice work! Next, we'll move on to <strong>Static Menus</strong>.</p><p>A Static Menu simply displays a list of items when clicked.</p><p>Again, we'll ask you to <strong>pick items from the three menus</strong></p><p>(ex. Menu 1 -> Peppers)</p>"];
 		}else if (block_type === "finish"){
-			return ["<h1>Finished</h1>", "<p><strong>Congratulations!</strong></p><p>The experiment is <strong>finished</strong>!</p><p>Thank you for your participation!</p>"];
+			return ["<h1>Last Step!</h1>", "<p><strong>Fantastic work!</strong></p><p>You finished the menu experiment. Now please fill out a simple <strong>reflection</strong> and we'll be done!</p>"];
 		}else{
 			return ["<h1>Ephemeral Menus</h1>", "<p>Great job! Next, we'll move on to the <strong>Ephemeral Menus</strong>.</p><p>An Ephemeral Menu will try to predict the item you want to click an display a few items immediately while the others <strong>fade in</strong>.</p><p>Again, we'll ask you to <strong>pick items from the three menus</strong></p><p>(ex. Menu 1 -> Peppers)</p>"];
 		}

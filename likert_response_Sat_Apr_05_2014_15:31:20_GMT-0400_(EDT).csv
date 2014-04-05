@@ -1,0 +1,5 @@
+user_id, question, lbl_1, lbl_7, static, ephemeral
+1, How <strong>easy</strong> was using the menu?, Hard to Use, Easy to Use, 2, 4
+1, How <strong>satisfying</strong> was it to use?, Unsatisfying, Satisfying, 5, 6
+1, How <strong>efficient</strong> was the menu?, Inefficient, Efficient, 3, 5
+1, How <strong>understandable</strong> was it?, Confusing, Easy to Understand, 6, 6

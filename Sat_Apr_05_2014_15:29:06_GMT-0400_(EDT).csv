@@ -1,0 +1,5 @@
+user_id, time, selection, menu_number, num_wrong, type, onset, adaptive_accuracy
+1, 1016, 1, 2, 0, practice, 500, 75
+1, 1248, 1, 1, 0, onset 500, 500, 75
+1, 931, 0, 3, 0, onset 0, 0, 75
+1, 1163, 2, 3, 0, onset 250, 250, 75

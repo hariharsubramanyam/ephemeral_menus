@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Static Menus vs. Epehemeral Menus">
+    <meta name="author" content="Harihar Subramanyam">
+    
+    <title>After-Experiment Survey</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css"><!-- load bootstrap -->
+    <link rel="stylesheet" type="text/css" href="likert_scale.css">
+
+    <!-- Custom styles for this template -->
+    <script src="jquery.js"></script><!-- load jquery -->
+</head>
+<body>
+	<div class="container">
+		<div class="row well">
+			<h1>Please Rank the Menus</h1>
+		</div>
+		<div class="row">
+			<h2>Static Menus</h2>
+		</div>
+    <div id="static">
+    </div>
+		<div class="row">
+			<h2>Ephemeral Menus</h2>
+		</div>
+    <div id="ephemeral">
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-success" id="btnSubmit">Submit</button>
+    </div>
+    </div> <!-- /container -->
+    <div class="modal fade likert_modal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            
+          </div>
+          <div class="modal-footer">
+            <button id="btnDismissModal" type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="likert_scale.js"></script>
+</body>
+</html>
