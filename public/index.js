@@ -7,14 +7,13 @@ var chosen_index;
 var num_wrong;
 var event_log;
 var experiment_complete;
+var uuid;
+var ParseEventObject;
 
 $(document).ready(function(){
+	uuid = guid();
 	Parse.initialize(API_KEY, CLIENT_KEY);
-	var TestObject = Parse.Object.extend("TestObject");
-var testObject = new TestObject();
-testObject.save({foo: "bar"}).then(function(object) {
-  alert("yay! it worked");
-});
+	ParseEventObject = Parse.Object.extend("EventLog");
 	experiment_complete = false;
 	menus = generate_menus();
 	populate_menus();
@@ -116,6 +115,8 @@ function on_menu_item_click(){
 						"adaptive_accuracy":experiment_manager.adaptive_accuracy
 					};
 			event_log.push(event_info);
+		var parseObject = new ParseEventObject();
+		parseObject.save(event_info).then(function(object) {console.log("Saved an event to Parse")});
 		if(block_index < experiment_manager.current_block.selections.length){
 			chosen_menu = pick_n_from([1,2,3],1)[0];
 			chosen_index = experiment_manager.current_block.selections[block_index]-1;
@@ -254,4 +255,11 @@ function pick_n_from(choices, n){
 		chosen.push(choices[indices[i]]);
 	}
 	return chosen;
+}
+
+function guid(){
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    	var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    	return v.toString(16);
+	});
 }
