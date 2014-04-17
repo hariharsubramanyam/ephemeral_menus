@@ -24,7 +24,10 @@ var likert_questions = [
 var likert_responses = [];
 
 var btn_groups = [];
+
+var ParseLikertObject;
 $(document).ready(function(){
+	ParseLikertObject = Parse.Object.extend("LikertResponse");
 	for(var i = 0; i < likert_questions.length; i++){
 		likert_responses.push({
 			"question":likert_questions[i].question,
@@ -114,10 +117,16 @@ function createLikertElements(questions, div_id){
 }
 
 function submit_responses(){
-	$.ajax({
-		type: "POST",
-		url: "/api/create_likert_response",
-		data: {"likert_responses":likert_responses},
-		dataType: "json"
-	});
+	for(var i = 0; i < likert_reponses.length; i++){
+		console.log(uuid);
+		var parseObject = new ParseLikertObject();
+		likert_responses[i].user_id = uuid;
+		parseObject.save(likert_responses[i]).then(function(object) {console.log("Saved a likert response to Parse")});
+	}
+	// $.ajax({
+	// 	type: "POST",
+	// 	url: "/api/create_likert_response",
+	// 	data: {"likert_responses":likert_responses},
+	// 	dataType: "json"
+	// });
 }

@@ -39,12 +39,12 @@ function perform_block(){
 			window.location.href = "likert_scale.html";
 		});
 		console.log(event_log);
-		$.ajax({
-				type: "POST",
-				url: "/api/create_event_log",
-				data: {"event_log":event_log},
-				dataType: "json"
-		});
+		// $.ajax({
+		// 		type: "POST",
+		// 		url: "/api/create_event_log",
+		// 		data: {"event_log":event_log},
+		// 		dataType: "json"
+		// });
 		experiment_complete = true;
 	}
 	$('.modal-title').html(modal_text[0]);
@@ -115,8 +115,10 @@ function on_menu_item_click(){
 						"adaptive_accuracy":experiment_manager.adaptive_accuracy
 					};
 			event_log.push(event_info);
+		var parse_info = event_info;
+		parse_info.user_id = uuid;
 		var parseObject = new ParseEventObject();
-		parseObject.save(event_info).then(function(object) {console.log("Saved an event to Parse")});
+		parseObject.save(parse_info).then(function(object) {console.log("Saved an event to Parse")});
 		if(block_index < experiment_manager.current_block.selections.length){
 			chosen_menu = pick_n_from([1,2,3],1)[0];
 			chosen_index = experiment_manager.current_block.selections[block_index]-1;
