@@ -9,6 +9,12 @@ var event_log;
 var experiment_complete;
 
 $(document).ready(function(){
+	Parse.initialize(API_KEY, CLIENT_KEY);
+	var TestObject = Parse.Object.extend("TestObject");
+var testObject = new TestObject();
+testObject.save({foo: "bar"}).then(function(object) {
+  alert("yay! it worked");
+});
 	experiment_complete = false;
 	menus = generate_menus();
 	populate_menus();
