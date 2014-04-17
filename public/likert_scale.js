@@ -27,7 +27,10 @@ var btn_groups = [];
 
 var ParseLikertObject;
 var uuid;
+var submitted = false;
+
 $(document).ready(function(){
+	submitted = false;
 	Parse.initialize(API_KEY, CLIENT_KEY);
 	ParseLikertObject = Parse.Object.extend("LikertResponse");
 	uuid = getParameterByName("user_id");
@@ -120,6 +123,9 @@ function createLikertElements(questions, div_id){
 }
 
 function submit_responses(){
+	if(submitted)
+		return;
+	submitted = true;
 	for(var i = 0; i < likert_responses.length; i++){
 		console.log(uuid);
 		var parseObject = new ParseLikertObject();
