@@ -61,8 +61,8 @@ app.get('*', function(req, res) {
 	res.sendfile('./public/index.html');
 });
 
-app.listen(8080);
-console.log("App listening on port 8080");
+app.listen(5000);
+console.log("App listening on port 5000");
 
 function generate_experiment_for_user(experiment_config, experiment_state){
 
