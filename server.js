@@ -24,7 +24,7 @@ app.get('/api/get_experiment', function(req,res){
 		}
 	});
 	var experiment = generate_experiment_for_user(experiment_config, experiment_state);
-	res.send(experiment);
+	res.send({"experiment":experiment, "user_id":experiment_state.total_users});
 });
 
 app.post('/api/create_event_log', function(req, res) {

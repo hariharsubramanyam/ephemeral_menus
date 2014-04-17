@@ -11,7 +11,7 @@ var uuid;
 var ParseEventObject;
 
 $(document).ready(function(){
-	uuid = guid();
+	
 	Parse.initialize(API_KEY, CLIENT_KEY);
 	ParseEventObject = Parse.Object.extend("EventLog");
 	experiment_complete = false;
@@ -23,7 +23,8 @@ $(document).ready(function(){
 		url: "/api/get_experiment",
 		cache: false
 	}).done(function( experiment ) {
-		experiment_manager = new ExperimentManager(experiment);
+		experiment_manager = new ExperimentManager(experiment.experiment);
+		uuid = experiment.user_id;
 		perform_block();
 	});
 });
@@ -257,11 +258,4 @@ function pick_n_from(choices, n){
 		chosen.push(choices[indices[i]]);
 	}
 	return chosen;
-}
-
-function guid(){
-	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    	var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-    	return v.toString(16);
-	});
 }

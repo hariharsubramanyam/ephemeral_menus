@@ -117,7 +117,7 @@ function createLikertElements(questions, div_id){
 }
 
 function submit_responses(){
-	for(var i = 0; i < likert_reponses.length; i++){
+	for(var i = 0; i < likert_responses.length; i++){
 		console.log(uuid);
 		var parseObject = new ParseLikertObject();
 		likert_responses[i].user_id = uuid;
