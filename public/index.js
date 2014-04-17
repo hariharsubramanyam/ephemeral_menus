@@ -11,7 +11,6 @@ var uuid;
 var ParseEventObject;
 
 $(document).ready(function(){
-	
 	Parse.initialize(API_KEY, CLIENT_KEY);
 	ParseEventObject = Parse.Object.extend("EventLog");
 	experiment_complete = false;
@@ -24,7 +23,8 @@ $(document).ready(function(){
 		cache: false
 	}).done(function( experiment ) {
 		experiment_manager = new ExperimentManager(experiment.experiment);
-		uuid = experiment.user_id;
+		uuid = ""+experiment.user_id;
+		console.log(uuid);
 		perform_block();
 	});
 });
@@ -37,7 +37,7 @@ function perform_block(){
 	if(experiment_manager.current_block.type == "finish"){
 		$("#btnDismissModal").unbind("click");
 		$("#btnDismissModal").click(function(){
-			window.location.href = "likert_scale.html";
+			window.location.href = "likert_scale.html?user_id="+uuid;
 		});
 		console.log(event_log);
 		// $.ajax({

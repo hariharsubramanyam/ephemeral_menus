@@ -26,8 +26,11 @@ var likert_responses = [];
 var btn_groups = [];
 
 var ParseLikertObject;
+var uuid;
 $(document).ready(function(){
+	Parse.initialize(API_KEY, CLIENT_KEY);
 	ParseLikertObject = Parse.Object.extend("LikertResponse");
+	uuid = getParameterByName("user_id");
 	for(var i = 0; i < likert_questions.length; i++){
 		likert_responses.push({
 			"question":likert_questions[i].question,
@@ -129,4 +132,11 @@ function submit_responses(){
 	// 	data: {"likert_responses":likert_responses},
 	// 	dataType: "json"
 	// });
+}
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }

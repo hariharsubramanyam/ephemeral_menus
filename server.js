@@ -27,6 +27,10 @@ app.get('/api/get_experiment', function(req,res){
 	res.send({"experiment":experiment, "user_id":experiment_state.total_users});
 });
 
+app.get("/api/get_user_id", function(req,res){
+	res.send({"user_id":experiment_state.total_users});
+});
+
 app.post('/api/create_event_log', function(req, res) {
 	var base_file_name = ("" + new Date()).replace(/ /g, "_");
 	fs.writeFile(base_file_name + ".json", JSON.stringify({
