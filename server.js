@@ -60,9 +60,9 @@ app.post('/api/create_likert_response', function(req, res) {
 app.get('*', function(req, res) {
 	res.sendfile('./public/index.html');
 });
-
-app.listen(5000);
-console.log("App listening on port 5000");
+var port = Number(process.env.PORT || 5000);
+app.listen(port);
+console.log("App listening on port " + port);
 
 function generate_experiment_for_user(experiment_config, experiment_state){
 
