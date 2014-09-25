@@ -6,7 +6,7 @@ http://terpconnect.umd.edu/~leahkf/pubs/CHI2009-findlater-ephemeral.pdf
 
 It allows you to configure and administer a study which compares ephemeral menus and static menus.
 
-Collaboration Statement: I did not work with anybody else to implement this program.
+![screenshot](https://raw.githubusercontent.com/hariharsubramanyam/ephemeral_menus/master/screenshot/ephemeral_screenshot.png)
 
 # Demo
 
