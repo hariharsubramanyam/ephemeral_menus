@@ -22,15 +22,15 @@ This requires node.js and it has been tested with Chrome.
 
 In the top level directory, run
 
-> npm install
+`npm install`
 
 and then start the server with:
 
-> node server.js
+`node server.js`
 
 and open your browser (Google Chrome please!) and navigate to 
 
-> http://localhost:8080
+`http://localhost:5000`
 
 and that's how you take the experiment!
 
